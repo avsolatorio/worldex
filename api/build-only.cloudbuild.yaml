@@ -1,7 +1,14 @@
 steps:
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/worldex-repo/worldex-api:$COMMIT_SHA', '.']
+  args: [
+    'build',
+    '-t',
+    'us-central1-docker.pkg.dev/$PROJECT_ID/worldex-repo/worldex-api:$COMMIT_SHA',
+    '--cache-from',
+    'us-central1-docker.pkg.dev/$PROJECT_ID/worldex-repo/worldex-api:latest',
+    '.'
+  ]
   dir: 'api/'
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'

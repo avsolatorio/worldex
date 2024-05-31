@@ -8,9 +8,15 @@ with_parents AS (
   FROM fill,
   LATERAL generate_series(0, :resolution) AS resolution
   GROUP BY fill_index
+),
+dataset AS (
+  SELECT COALESCE(dataset_id, id) id FROM datasets WHERE id = :dataset_id
 )
-SELECT fill_index FROM with_parents JOIN h3_data ON h3_index = ANY(parents) AND dataset_id = :dataset_id
+SELECT fill_index FROM with_parents
+JOIN h3_data ON h3_index = ANY(parents)
+AND dataset_id = (SELECT id FROM dataset)
 UNION ALL
 SELECT fill_index h3_index FROM fill
-JOIN h3_children_indicators ON h3_children_indicators.h3_index = fill_index AND dataset_id = :dataset_id
+JOIN h3_children_indicators ON h3_children_indicators.h3_index = fill_index
+AND dataset_id = (SELECT id FROM dataset)
 """

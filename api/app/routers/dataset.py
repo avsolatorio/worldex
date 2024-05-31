@@ -41,6 +41,7 @@ async def get_dataset_counts(
         filters["accessibility"] = payload.accessibility
     location = payload.location
     should_hit_cache = not (payload.ignore_cache or location or filters)
+    should_hit_cache = False
     dataset_count_bytes = None
     if should_hit_cache:
         result = await session.execute(

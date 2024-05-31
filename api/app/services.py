@@ -84,7 +84,7 @@ def dataset_count_to_bytes(dataset_counts):
 
 async def get_dataset_metadata_results(session: Session, target: str, filters: dict[str, List[str]]={}):
     dataset_metadata_query = DATASET_METADATA_FILTERED if filters else DATASET_METADATA
-    candidate_datasets_stmt = select(Dataset.id.label("dataset_id"))
+    candidate_datasets_stmt = select(Dataset.id)
     if source_org := filters.get("source_org"):
         candidate_datasets_stmt = candidate_datasets_stmt.where(Dataset.source_org.in_(source_org))
     if accessibility := filters.get("accessibility"):
