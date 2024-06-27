@@ -19,6 +19,7 @@ export interface DatasetCount {
 }
 
 export interface Entity {
+  raw?: boolean;
   start?: number;
   end?: number;
   text: string;

@@ -4,9 +4,11 @@ import { Dataset } from 'components/common/types';
 
 const initialState: any = {
   h3Index: null,
+  candidateDatasets: [],
   datasets: [],
   datasetCount: null,
   selectedDataset: null,
+
 };
 
 const slice = createSlice({
@@ -17,6 +19,9 @@ const slice = createSlice({
       state.h3Index = action.payload;
     },
     // should be on a different slice
+    setCandidateDatasets: (state, action) => {
+      state.candidateDatasets = action.payload;
+    },
     setDatasets: (state, action) => {
       state.datasets = action.payload;
     },
@@ -43,6 +48,10 @@ export const selectDatasetIds = createSelector(
 
 export const setH3Index = (payload: string | null) => ({
   type: 'selected/setH3Index',
+  payload,
+});
+export const setCandidateDatasets = (payload: Dataset[]) => ({
+  type: 'selected/setCandidateDatasets',
   payload,
 });
 export const setDatasets = (payload: Dataset[]) => ({

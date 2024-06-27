@@ -1,13 +1,9 @@
+import booleanWithin from '@turf/boolean-within';
 import { multiPolygon, point, polygon } from '@turf/helpers';
 import axios from 'axios';
 import { Entity } from 'components/common/types';
-import booleanWithin from '@turf/boolean-within';
 import { cellToLatLng, getResolution } from 'h3-js';
 import { resetByKey as resetSelectedByKey } from 'store/selectedSlice';
-
-export const getEntitiesByLabels = (entities: Entity[], ...labels: string[]) => (
-  entities.filter((e: Entity) => labels.includes(e.label))
-);
 
 const stripEntities = (query: string, entities: Entity[]): string => {
   if (!Array.isArray(entities) || entities.length === 0) {
@@ -39,6 +35,7 @@ export const prepSearchKeyword = async (query: string, entities: Entity[], label
 };
 
 export const getDatasetsByKeyword = async (params: any) => {
+  console.info('Keyword search:', params);
   const { data } = await axios.get(
     `${import.meta.env.VITE_API_URL}/search/keyword`,
     { params },
@@ -54,3 +51,8 @@ export const deselectTile = (h3Index: string, resolution: number, location: any,
     dispatch(resetSelectedByKey('h3Index'));
   }
 };
+
+export const updateKeywordEntity = ({ keywordEntity, entities }: { keywordEntity: any, entities: Entity[] }) => ([
+  ...entities.filter((e: Entity) => e.label !== 'keyword'),
+  { ...keywordEntity, label: 'keyword' },
+]);
